@@ -6,30 +6,26 @@ public:
 
         // i.e. sort nums first, then start at each element and treat as pivot, then iterate through right side
         // and check the distance from target, if less than current ongoing min, then set it to that.. 
-
         sort(nums.begin(), nums.end());
         int difference = INT_MAX;
+        int leftPtr, rightPtr = 0, result = 0;
         for(int i = 0; i<nums.size(); i++) {
-            if (difference == 0) {
-                // we can't get a smaller difference!
-                break;
-            }
-            int leftPtr = i+1;
-            int rightPtr = nums.size()-1;
+            leftPtr = i+1;
+            rightPtr = nums.size()-1;
             while(leftPtr < rightPtr) {
                 int sum = nums[i] + nums[leftPtr] + nums[rightPtr];
-                if (abs(target-sum) < abs(difference)) {
-                    difference = target-sum;
+                if (abs(sum - target) <= abs(difference)) {
+                    difference = sum-target;
+                    result = sum; // keep track of this sum
                 }
                 // now, update the leftPTr and rightPtr based on if sum-target is positive or negative..
-                if (target-sum > 0) {
+                if (sum > target) {
                     rightPtr--;
                 } else {
                     leftPtr++;
                 }
             }
         }
-        // sum = target Number - lowest diff here..
-        return target-difference;
+        return result;
     }
 };
